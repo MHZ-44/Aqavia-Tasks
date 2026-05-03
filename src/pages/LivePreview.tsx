@@ -15,11 +15,30 @@ function LivePreview({ data }: Props) {
           const value = data[field.label as keyof FormData]
 
           if (value instanceof FileList) {
+            const file = value.length > 0 ? value[0] : null
+            const previewUrl = file ? URL.createObjectURL(file) : ""
+
             return (
-              <p key={field.label}>
-                <span className="font-medium">{field.label}: </span>
-                {value.length > 0 ? value[0]?.name : "-"}
-              </p>
+              <div key={field.label}>
+                <p>
+                  <span className="font-medium">{field.label}: </span>
+                  {file?.name ?? "-"}
+                </p>
+                {file && field.type === "image" ? (
+                  <img
+                    src={previewUrl}
+                    alt={file.name}
+                    className="mt-2 max-h-56 rounded-md border object-cover"
+                  />
+                ) : null}
+                {file && field.type === "video" ? (
+                  <video
+                    src={previewUrl}
+                    controls
+                    className="mt-2 max-h-56 rounded-md border"
+                  />
+                ) : null}
+              </div>
             )
           }
 

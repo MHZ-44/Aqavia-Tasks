@@ -35,11 +35,13 @@ function FormCard({ onSubmit, onWatch }: Props) {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   })
-  const watchedValues = watch()
 
   useEffect(() => {
-    onWatch?.(watchedValues)
-  }, [onWatch, watchedValues])
+    const subscription = watch((value) => {
+      onWatch?.(value)
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, onWatch])
 
   return (
     <Card className="mt-5 h-full w-[800px] gap-2 p-10">
