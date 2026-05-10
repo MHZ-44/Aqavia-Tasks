@@ -1,12 +1,10 @@
-import { useState } from "react"
 import FormCard from "./pages/FormCard"
-import FormTable from "./pages/FormTable"
-import LivePreview from "./pages/LivePreview"
+import CommentTable from "./pages/CommentTable"
+import useCreateComment from "./hooks/useCreateComment"
 import type { FormData } from "./validation/formSchema"
 
 export default function App() {
-  const [rows, setRows] = useState<FormData[]>([])
-  const [liveData, setLiveData] = useState<FormData>({})
+  const createComment = useCreateComment()
 
   return (
     <div className="flex justify-center font-mono text-xs text-muted-foreground">
@@ -14,16 +12,19 @@ export default function App() {
         <div className="mt-5 grid grid-cols-1 items-stretch gap-5 xl:grid-cols-[800px_800px]">
           <FormCard
             onSubmit={(data) => {
-              setRows((prev) => [...prev, data])
-              console.log(data)
+              const formData = data as FormData
+              createComment.mutate({
+                id: Date.now(),
+                name: String(formData.Name ?? ""),
+                email: String(formData.Email ?? ""),
+                body: String(formData.Comment ?? ""),
+              })
             }}
-            onWatch={(data) => setLiveData(data)}
           />
-          <LivePreview data={liveData} />
         </div>
 
         <div className="mt-5 w-full">
-          <FormTable rows={rows} />
+          <CommentTable />
         </div>
 
         <p className="mt-3">

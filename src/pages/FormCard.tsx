@@ -60,7 +60,10 @@ function FormCard({ onSubmit, onWatch }: Props) {
               return (
                 <div key={field.label} className="space-y-1.5">
                   <Label htmlFor={field.label}>{field.label}</Label>
-                  <Textarea id={field.label} {...register(key)} />
+                  <Textarea
+                    id={field.label}
+                    {...register(key)}
+                  />
                   {errors[key]?.message ? (
                     <p className="text-sm text-destructive">
                       {String(errors[key]?.message)}
@@ -202,7 +205,11 @@ function FormCard({ onSubmit, onWatch }: Props) {
               return (
                 <div key={field.label} className="space-y-1.5">
                   <Label htmlFor={field.label}>{field.label}</Label>
-                  <Input id={field.label} type="text" {...register(key)} />
+                  <Input
+                    id={field.label}
+                    type="text"
+                    {...register(key)}
+                  />
                   {errors[key]?.message ? (
                     <p className="text-sm text-destructive">
                       {String(errors[key]?.message)}
